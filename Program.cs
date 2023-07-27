@@ -1,5 +1,7 @@
 ﻿Console.WriteLine("Let's play Rock-Paper-Scissors!");
 
+string[] availableSigns = { "rock", "paper", "scissors" };
+
 while (true)
 {
     string? firstPlayerSign;
@@ -7,7 +9,7 @@ while (true)
     {
         Console.WriteLine("Provide sign, first player (or write 'quit' to end game):");
         firstPlayerSign = Console.ReadLine();
-    } while (firstPlayerSign != "rock" && firstPlayerSign != "paper" && firstPlayerSign != "scissors" && firstPlayerSign != "quit");
+    } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != "quit");
 
     if (firstPlayerSign == "quit")
     {
@@ -19,7 +21,7 @@ while (true)
     {
         Console.WriteLine("Provide sign, second player (or write 'quit' to end game):");
         secondPlayerSign = Console.ReadLine();
-    } while (secondPlayerSign != "rock" && secondPlayerSign != "paper" && secondPlayerSign != "scissors" && secondPlayerSign != "quit");
+    } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != "quit");
 
     if (secondPlayerSign == "quit")
     {
