@@ -28,13 +28,15 @@ while (true)
         break;
     }
 
+    int secondPlayerSignIndex = Array.IndexOf(availableSigns, secondPlayerSign);
+    int winningWithSecondPlayerSignIndex = (secondPlayerSignIndex + 1) % availableSigns.Length;
+    string winningWithSecondPlayerSign = availableSigns[winningWithSecondPlayerSignIndex];
+
     if (firstPlayerSign == secondPlayerSign)
     {
         Console.WriteLine("It's a draw!");
     }
-    else if ((firstPlayerSign == "rock" && secondPlayerSign == "scissors")
-        || (firstPlayerSign == "paper" && secondPlayerSign == "rock")
-        || (firstPlayerSign == "scissors" && secondPlayerSign == "paper"))
+    else if (firstPlayerSign == winningWithSecondPlayerSign)
     {
         Console.WriteLine("First player won!");
     }
