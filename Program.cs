@@ -4,53 +4,79 @@ string[] availableSigns = { "rock", "paper", "scissors" };
 const string EndGameCommand = "quit";
 int firstPlayerPoints = 0;
 int secondPlayerPoints = 0;
+int expectedRoundNumber = 3;
 
-while (true)
+bool keepPlaying = true;
+
+while (keepPlaying)
 {
-    string? firstPlayerSign;
-    do
+    for (int roundNumber = 1; roundNumber <= expectedRoundNumber; roundNumber++)
     {
-        Console.WriteLine($"Provide sign, first player (or write '{EndGameCommand}' to end game):");
-        firstPlayerSign = Console.ReadLine();
-    } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != EndGameCommand);
+        Console.WriteLine($"  Round {roundNumber}");
 
-    if (firstPlayerSign == EndGameCommand)
-    {
-        break;
+        string? firstPlayerSign;
+        do
+        {
+            Console.WriteLine($"Provide sign, first player (or write '{EndGameCommand}' to end game):");
+            firstPlayerSign = Console.ReadLine();
+        } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != EndGameCommand);
+
+        if (firstPlayerSign == EndGameCommand)
+        {
+            keepPlaying = false;
+            break;
+        }
+
+        string? secondPlayerSign;
+        do
+        {
+            Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
+            secondPlayerSign = Console.ReadLine();
+        } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
+
+        if (secondPlayerSign == EndGameCommand)
+        {
+            keepPlaying = false;
+            break;
+        }
+
+        int secondPlayerSignIndex = Array.IndexOf(availableSigns, secondPlayerSign);
+        int winningWithSecondPlayerSignIndex = (secondPlayerSignIndex + 1) % availableSigns.Length;
+        string winningWithSecondPlayerSign = availableSigns[winningWithSecondPlayerSignIndex];
+
+        if (firstPlayerSign == secondPlayerSign)
+        {
+            Console.WriteLine("It's a draw!");
+        }
+        else if (firstPlayerSign == winningWithSecondPlayerSign)
+        {
+            Console.WriteLine($"First player won: {firstPlayerSign} beats {secondPlayerSign}!");
+            firstPlayerPoints += 1;
+        }
+        else
+        {
+            Console.WriteLine($"Second player won {secondPlayerSign} beats {firstPlayerSign}!");
+            secondPlayerPoints += 1;
+        }
+
+        Console.WriteLine($"[Player1] {firstPlayerPoints} : {secondPlayerPoints} [Player2]");
     }
 
-    string? secondPlayerSign;
-    do
+    if (firstPlayerPoints > secondPlayerPoints)
     {
-        Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
-        secondPlayerSign = Console.ReadLine();
-    } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
-
-    if (secondPlayerSign == EndGameCommand)
-    {
-        break;
+        Console.WriteLine($"== First player crushed second player {firstPlayerPoints} to {secondPlayerPoints}!");
     }
-
-    int secondPlayerSignIndex = Array.IndexOf(availableSigns, secondPlayerSign);
-    int winningWithSecondPlayerSignIndex = (secondPlayerSignIndex + 1) % availableSigns.Length;
-    string winningWithSecondPlayerSign = availableSigns[winningWithSecondPlayerSignIndex];
-
-    if (firstPlayerSign == secondPlayerSign)
+    else if (secondPlayerPoints > firstPlayerPoints)
     {
-        Console.WriteLine("It's a draw!");
-    }
-    else if (firstPlayerSign == winningWithSecondPlayerSign)
-    {
-        Console.WriteLine($"First player won: {firstPlayerSign} beats {secondPlayerSign}!");
-        firstPlayerPoints += 1;
+        Console.WriteLine($"== Second player crushed first player {secondPlayerPoints} to {firstPlayerPoints}!");
     }
     else
     {
-        Console.WriteLine($"Second player won {secondPlayerSign} beats {firstPlayerSign}!");
-        secondPlayerPoints += 1;
+        Console.WriteLine($"== It's a total draw {firstPlayerPoints} to {secondPlayerPoints}!");
     }
 
-    Console.WriteLine($"[Player1] {firstPlayerPoints} : {secondPlayerPoints} [Player2]");
+    firstPlayerPoints = 0;
+    secondPlayerPoints = 0;
 }
 
 Console.WriteLine("Press Enter to close the game...");
