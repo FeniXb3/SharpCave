@@ -1,17 +1,18 @@
 ﻿Console.WriteLine("Let's play Rock-Paper-Scissors!");
 
 string[] availableSigns = { "rock", "paper", "scissors" };
+const string EndGameCommand = "quit";
 
 while (true)
 {
     string? firstPlayerSign;
     do
     {
-        Console.WriteLine("Provide sign, first player (or write 'quit' to end game):");
+        Console.WriteLine($"Provide sign, first player (or write '{EndGameCommand}' to end game):");
         firstPlayerSign = Console.ReadLine();
-    } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != "quit");
+    } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != EndGameCommand);
 
-    if (firstPlayerSign == "quit")
+    if (firstPlayerSign == EndGameCommand)
     {
         break;
     }
@@ -19,11 +20,11 @@ while (true)
     string? secondPlayerSign;
     do
     {
-        Console.WriteLine("Provide sign, second player (or write 'quit' to end game):");
+        Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
         secondPlayerSign = Console.ReadLine();
-    } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != "quit");
+    } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
 
-    if (secondPlayerSign == "quit")
+    if (secondPlayerSign == EndGameCommand)
     {
         break;
     }
