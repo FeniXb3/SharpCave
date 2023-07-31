@@ -39,11 +39,11 @@ while (true)
     }
     else if (firstPlayerSign == winningWithSecondPlayerSign)
     {
-        Console.WriteLine("First player won!");
+        Console.WriteLine($"First player won: {firstPlayerSign} beats {secondPlayerSign}!");
     }
     else
     {
-        Console.WriteLine("Second player won!");
+        Console.WriteLine($"Second player won {secondPlayerSign} beats {firstPlayerSign}!");
     }
 }
 
