@@ -2,6 +2,8 @@
 
 string[] availableSigns = { "rock", "paper", "scissors" };
 const string EndGameCommand = "quit";
+int firstPlayerPoints = 0;
+int secondPlayerPoints = 0;
 
 while (true)
 {
@@ -40,11 +42,15 @@ while (true)
     else if (firstPlayerSign == winningWithSecondPlayerSign)
     {
         Console.WriteLine($"First player won: {firstPlayerSign} beats {secondPlayerSign}!");
+        firstPlayerPoints += 1;
     }
     else
     {
         Console.WriteLine($"Second player won {secondPlayerSign} beats {firstPlayerSign}!");
+        secondPlayerPoints += 1;
     }
+
+    Console.WriteLine($"[Player1] {firstPlayerPoints} : {secondPlayerPoints} [Player2]");
 }
 
 Console.WriteLine("Press Enter to close the game...");
