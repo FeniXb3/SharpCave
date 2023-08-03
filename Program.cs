@@ -18,7 +18,7 @@ while (keepPlaying)
         do
         {
             Console.WriteLine($"Provide sign, first player (or write '{EndGameCommand}' to end game):");
-            firstPlayerSign = Console.ReadLine();
+            firstPlayerSign = Console.ReadLine()?.ToLower();
         } while (!availableSigns.Contains(firstPlayerSign) && firstPlayerSign != EndGameCommand);
 
         if (firstPlayerSign == EndGameCommand)
@@ -31,7 +31,7 @@ while (keepPlaying)
         do
         {
             Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
-            secondPlayerSign = Console.ReadLine();
+            secondPlayerSign = Console.ReadLine()?.ToLower();
         } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
 
         if (secondPlayerSign == EndGameCommand)
