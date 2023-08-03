@@ -1,5 +1,8 @@
 ﻿Console.WriteLine("Let's play Rock-Paper-Scissors!");
 
+Console.WriteLine("Do you have anyone to play with? (yes/no)");
+bool playingWithOtherHuman = (Console.ReadLine()?.ToLower().Trim() == "yes");
+
 string[] availableSigns = { "rock", "paper", "scissors" };
 const string EndGameCommand = "quit";
 int firstPlayerPoints = 0;
@@ -28,16 +31,26 @@ while (keepPlaying)
         }
 
         string? secondPlayerSign;
-        do
+        if (playingWithOtherHuman)
         {
-            Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
-            secondPlayerSign = Console.ReadLine()?.ToLower().Trim();
-        } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
+            do
+            {
+                Console.WriteLine($"Provide sign, second player (or write '{EndGameCommand}' to end game):");
+                secondPlayerSign = Console.ReadLine()?.ToLower().Trim();
+            } while (!availableSigns.Contains(secondPlayerSign) && secondPlayerSign != EndGameCommand);
 
-        if (secondPlayerSign == EndGameCommand)
+            if (secondPlayerSign == EndGameCommand)
+            {
+                keepPlaying = false;
+                break;
+            }
+        }
+        else
         {
-            keepPlaying = false;
-            break;
+            Random rng = new Random();
+            int randomSignIndex = rng.Next(availableSigns.Length);
+            secondPlayerSign = availableSigns[randomSignIndex];
+            Console.WriteLine($"Second player provided {secondPlayerSign}");
         }
 
         int secondPlayerSignIndex = Array.IndexOf(availableSigns, secondPlayerSign);
