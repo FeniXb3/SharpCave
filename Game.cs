@@ -2,11 +2,11 @@ class Game
 {
     string[] availableSigns = { "rock", "paper", "scissors" };
     const string EndGameCommand = "quit";
-    int firstPlayerPoints = 0;
-    int secondPlayerPoints = 0;
     int expectedRoundNumber = 3;
     bool keepPlaying = true;
     bool playingWithOtherHuman;
+    Player firstPlayer = new Player("First player");
+    Player secondPlayer = new Player("Second player");
 
     public void Run()
     {
@@ -40,31 +40,31 @@ class Game
 
     private void DisplayGameSummary()
     {
-        if (firstPlayerPoints > secondPlayerPoints)
+        if (firstPlayer.Points > secondPlayer.Points)
         {
-            Console.WriteLine($"== First player crushed second player {firstPlayerPoints} to {secondPlayerPoints}!");
+            Console.WriteLine($"== {firstPlayer.Name} crushed {secondPlayer.Name.ToLower()} {firstPlayer.Points} to {secondPlayer.Points}!");
         }
-        else if (secondPlayerPoints > firstPlayerPoints)
+        else if (secondPlayer.Points > firstPlayer.Points)
         {
-            Console.WriteLine($"== Second player crushed first player {secondPlayerPoints} to {firstPlayerPoints}!");
+            Console.WriteLine($"== {secondPlayer.Name} crushed {firstPlayer.Name.ToLower()} {secondPlayer.Points} to {firstPlayer.Points}!");
         }
         else
         {
-            Console.WriteLine($"== It's a total draw {firstPlayerPoints} to {secondPlayerPoints}!");
+            Console.WriteLine($"== It's a total draw {firstPlayer.Points} to {secondPlayer.Points}!");
         }
     }
     
     private void ResetGameData()
     {
-        firstPlayerPoints = 0;
-        secondPlayerPoints = 0;
+        firstPlayer.Points = 0;
+        secondPlayer.Points = 0;
     }
 
     private bool PlayRound(int roundNumber)
     {
         Console.WriteLine($"  Round {roundNumber}");
 
-        string? firstPlayerSign = GetPlayerSign("first");
+        string? firstPlayerSign = firstPlayer.GetSign(availableSigns, EndGameCommand);
 
         if (firstPlayerSign == EndGameCommand)
         {
@@ -75,7 +75,7 @@ class Game
         string? secondPlayerSign;
         if (playingWithOtherHuman)
         {
-            secondPlayerSign = GetPlayerSign("second");
+            secondPlayerSign = secondPlayer.GetSign(availableSigns, EndGameCommand);
 
             if (secondPlayerSign == EndGameCommand)
             {
@@ -96,29 +96,18 @@ class Game
         }
         else if (firstPlayerSign == winningWithSecondPlayerSign)
         {
-            DisplayWinningText("First player", firstPlayerSign, secondPlayerSign);
-            firstPlayerPoints += 1;
+            DisplayWinningText(firstPlayer.Name, firstPlayerSign, secondPlayerSign);
+            firstPlayer.Points += 1;
         }
         else
         {
-            DisplayWinningText("Second player", secondPlayerSign, firstPlayerSign);
-            secondPlayerPoints += 1;
+            DisplayWinningText(secondPlayer.Name, secondPlayerSign, firstPlayerSign);
+            secondPlayer.Points += 1;
         }
 
-        Console.WriteLine($"[Player1] {firstPlayerPoints} : {secondPlayerPoints} [Player2]");
+        Console.WriteLine($"[Player1] {firstPlayer.Points} : {secondPlayer.Points} [Player2]");
 
         return true;
-    }
-
-    private string? GetPlayerSign(string playerName)
-    {
-        string? sign;
-        do
-        {
-            Console.WriteLine($"Provide sign, {playerName} player (or write '{EndGameCommand}' to end game):");
-            sign = Console.ReadLine()?.ToLower().Trim();
-        } while (!availableSigns.Contains(sign) && sign != EndGameCommand);
-        return sign;
     }
 
     private string GetComputerPlayerSign()
@@ -127,7 +116,7 @@ class Game
         Random rng = new Random();
         int randomSignIndex = rng.Next(availableSigns.Length);
         secondPlayerSign = availableSigns[randomSignIndex];
-        Console.WriteLine($"Second player provided {secondPlayerSign}");
+        Console.WriteLine($"{secondPlayer.Name} provided {secondPlayerSign}");
         return secondPlayerSign;
     }
 
