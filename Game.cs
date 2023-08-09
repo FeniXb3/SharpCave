@@ -16,15 +16,10 @@ class Game
         playingWithOtherHuman = (Console.ReadLine()?.ToLower().Trim() == "yes");
 
         firstPlayer = new HumanPlayer("First player");
-        
-        if (playingWithOtherHuman)
-        {
-            secondPlayer = new HumanPlayer("Second player");
-        }
-        else
-        {
-            secondPlayer = new ComputerPlayer("Second player");
-        }
+
+        secondPlayer = playingWithOtherHuman 
+            ? new HumanPlayer("Second player") 
+            : new ComputerPlayer("Second player");
 
         while (keepPlaying)
         {
