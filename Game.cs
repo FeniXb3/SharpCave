@@ -110,7 +110,7 @@ class Game
 
         for (int i = 0; i < players.Length; i++)
         {
-            signs[i] = players[i].GetSign(availableSigns, EndGameCommand);
+            signs[i] = players[i].GetSign(availableSigns, EndGameCommand) ?? String.Empty;
 
             if (signs[i] == EndGameCommand)
             {
