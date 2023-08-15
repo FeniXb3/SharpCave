@@ -57,29 +57,33 @@ class Game
             return;
         }
 
-        int winningPlayerIndex = 0;
-        bool totalDraw = true;
+        List<Player> winningPlayers = new List<Player>();
+        winningPlayers.Add(players[0]);
+        int winningPoints = winningPlayers[0].Points;
 
         for (int i = 1; i < players.Length; i++)
         {
-            if (players[i].Points != players[winningPlayerIndex].Points)
+            Player currentPlayer = players[i];
+            if (currentPlayer.Points == winningPoints)
             {
-                totalDraw = false;
-               
-                if (players[i].Points > players[winningPlayerIndex].Points)
-                {
-                    winningPlayerIndex = i; // TODO: Handle ex aequo
-                }
+                winningPlayers.Add(currentPlayer);
+            }
+            else if (currentPlayer.Points > winningPoints)
+            {
+                winningPlayers.Clear();
+                winningPlayers.Add(currentPlayer);
+                winningPoints = currentPlayer.Points;
             }
         }
 
-        if (totalDraw)
+        if (winningPlayers.Count == players.Length)
         {
             Console.WriteLine($"== It's a total draw!");
         }
         else
         {
-            Console.WriteLine($"== {players[winningPlayerIndex].Name} crushed others with {players[winningPlayerIndex].Points} points!");
+            string names = String.Join(", ", winningPlayers);
+            Console.WriteLine($"== {names} crushed others with {winningPoints} points!");
         }
     }
 

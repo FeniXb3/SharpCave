@@ -9,4 +9,9 @@ abstract class Player
     }
 
     public abstract string? GetSign(string[] availableSigns, string endGameCommand);
+
+    public override string? ToString()
+    {
+        return Name;
+    }
 }
