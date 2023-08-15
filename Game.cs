@@ -23,7 +23,7 @@ class Game
             string name = $"Player {i + 1}";
             players[i] = playingWithOtherHuman
                 ? new HumanPlayer(name)
-                : new ComputerPlayer("player");
+                : new ComputerPlayer(name);
         }
 
 
