@@ -59,6 +59,25 @@ class Game
 
         List<Player> winningPlayers = new List<Player>();
         int winningPoints = -1;
+        winningPoints = GetWinners(winningPlayers, winningPoints);
+
+        if (winningPlayers.Count == players.Length)
+        {
+            Console.WriteLine($"== It's a total draw!");
+        }
+        else
+        {
+            string names = String.Join(", ", winningPlayers);
+            Console.WriteLine($"== {names} crushed others with {winningPoints} points!");
+        }
+    }
+
+    private int GetWinners(List<Player> winningPlayers, int winningPoints)
+    {
+        if (players == null)
+        {
+            return -1;
+        }
 
         foreach (Player currentPlayer in players)
         {
@@ -74,15 +93,7 @@ class Game
             }
         }
 
-        if (winningPlayers.Count == players.Length)
-        {
-            Console.WriteLine($"== It's a total draw!");
-        }
-        else
-        {
-            string names = String.Join(", ", winningPlayers);
-            Console.WriteLine($"== {names} crushed others with {winningPoints} points!");
-        }
+        return winningPoints;
     }
 
     private void ResetGameData()
@@ -107,20 +118,36 @@ class Game
 
         Console.WriteLine($"  Round {roundNumber}");
 
-        var signPairs = new List<(string sign, string winningSign)>();
-
-        foreach(Player player in players)
+        var signPairs = GetSignPairs();
+        if (signPairs == null)
         {
-            string sign = player.GetSign(availableSigns, EndGameCommand) ?? string.Empty;
-            
-            if (sign == EndGameCommand)
-            {
-                keepPlaying = false;
-                return false;
-            }
+            return false;
+        }
 
-            string winningSign = GetSignWinningWith(sign);
-            signPairs.Add((sign, winningSign));
+        PlayAllDuels(signPairs);
+        DisplayRoundPoints();
+
+        return true;
+    }
+
+    private void DisplayRoundPoints()
+    {
+        if (players == null)
+        {
+            return;
+        }
+        
+        foreach (Player player in players)
+        {
+            Console.WriteLine($"[{player.Name}]: {player.Points}");
+        }
+    }
+
+    private void PlayAllDuels(List<(string sign, string winningSign)>? signPairs)
+    {
+        if (players == null || signPairs == null)
+        {
+            return;
         }
 
         for (int firstPlayerIndex = 0; firstPlayerIndex < players.Length - 1; firstPlayerIndex++)
@@ -132,32 +159,54 @@ class Game
             {
                 var secondPlayerSigns = signPairs[secondPlayerIndex];
                 Player secondPlayer = players[secondPlayerIndex];
-
-                if (firstPlayerSign == secondPlayerSigns.sign)
-                {
-                    Console.WriteLine("It's a draw!");
-                }
-                else if (firstPlayerSign == secondPlayerSigns.winningSign)
-                {
-                    DisplayWinningText(firstPlayer.Name, firstPlayerSign, secondPlayerSigns.sign);
-                    firstPlayer.Points += 1;
-                }
-                else
-                {
-                    DisplayWinningText(secondPlayer.Name, secondPlayerSigns.sign, firstPlayerSign);
-                    secondPlayer.Points += 1;
-                }
+                PlayDuel(firstPlayerSign, firstPlayer, secondPlayerSigns, secondPlayer);
             }
         }
+    }
+
+    private static void PlayDuel(string firstPlayerSign, Player firstPlayer, (string sign, string winningSign) secondPlayerSigns, Player secondPlayer)
+    {
+        if (firstPlayerSign == secondPlayerSigns.sign)
+        {
+            Console.WriteLine("It's a draw!");
+        }
+        else if (firstPlayerSign == secondPlayerSigns.winningSign)
+        {
+            DisplayWinningText(firstPlayer.Name, firstPlayerSign, secondPlayerSigns.sign);
+            firstPlayer.Points += 1;
+        }
+        else
+        {
+            DisplayWinningText(secondPlayer.Name, secondPlayerSigns.sign, firstPlayerSign);
+            secondPlayer.Points += 1;
+        }
+    }
+
+    private List<(string sign, string winningSign)>? GetSignPairs()
+    {
+        if (players == null)
+        {
+            return null;
+        }
+
+        var signPairs = new List<(string sign, string winningSign)>();
 
         foreach(Player player in players)
         {
-            Console.WriteLine($"[{player.Name}]: {player.Points}");
+            string sign = player.GetSign(availableSigns, EndGameCommand) ?? string.Empty;
+            
+            if (sign == EndGameCommand)
+            {
+                keepPlaying = false;
+                return null;
+            }
+
+            string winningSign = GetSignWinningWith(sign);
+            signPairs.Add((sign, winningSign));
         }
 
-        return true;
+        return signPairs;
     }
-
 
     private string GetSignWinningWith(string? sign)
     {
