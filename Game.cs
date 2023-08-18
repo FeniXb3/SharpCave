@@ -107,14 +107,12 @@ class Game
 
         Console.WriteLine($"  Round {roundNumber}");
 
-        List<string> signs = new List<string>();
-        List<string> winningSigns = new List<string>();
+        var signPairs = new List<(string sign, string winningSign)>();
 
         foreach(Player player in players)
         {
             string sign = player.GetSign(availableSigns, EndGameCommand) ?? string.Empty;
-            signs.Add(sign);
-
+            
             if (sign == EndGameCommand)
             {
                 keepPlaying = false;
@@ -122,32 +120,31 @@ class Game
             }
 
             string winningSign = GetSignWinningWith(sign);
-            winningSigns.Add(winningSign);
+            signPairs.Add((sign, winningSign));
         }
 
         for (int firstPlayerIndex = 0; firstPlayerIndex < players.Length - 1; firstPlayerIndex++)
         {
-            string firstPlayerSign = signs[firstPlayerIndex];
+            string firstPlayerSign = signPairs[firstPlayerIndex].sign;
             Player firstPlayer = players[firstPlayerIndex];
 
             for (int secondPlayerIndex = firstPlayerIndex + 1; secondPlayerIndex < players.Length; secondPlayerIndex++)
             {
-                string secondPlayerSign = signs[secondPlayerIndex];
-                string winningWithSecondPlayerSign = winningSigns[secondPlayerIndex];
+                var secondPlayerSigns = signPairs[secondPlayerIndex];
                 Player secondPlayer = players[secondPlayerIndex];
 
-                if (firstPlayerSign == secondPlayerSign)
+                if (firstPlayerSign == secondPlayerSigns.sign)
                 {
                     Console.WriteLine("It's a draw!");
                 }
-                else if (firstPlayerSign == winningWithSecondPlayerSign)
+                else if (firstPlayerSign == secondPlayerSigns.winningSign)
                 {
-                    DisplayWinningText(firstPlayer.Name, firstPlayerSign, secondPlayerSign);
+                    DisplayWinningText(firstPlayer.Name, firstPlayerSign, secondPlayerSigns.sign);
                     firstPlayer.Points += 1;
                 }
                 else
                 {
-                    DisplayWinningText(secondPlayer.Name, secondPlayerSign, firstPlayerSign);
+                    DisplayWinningText(secondPlayer.Name, secondPlayerSigns.sign, firstPlayerSign);
                     secondPlayer.Points += 1;
                 }
             }
