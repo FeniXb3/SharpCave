@@ -58,12 +58,10 @@ class Game
         }
 
         List<Player> winningPlayers = new List<Player>();
-        winningPlayers.Add(players[0]);
-        int winningPoints = winningPlayers[0].Points;
+        int winningPoints = -1;
 
-        for (int i = 1; i < players.Length; i++)
+        foreach (Player currentPlayer in players)
         {
-            Player currentPlayer = players[i];
             if (currentPlayer.Points == winningPoints)
             {
                 winningPlayers.Add(currentPlayer);
@@ -94,9 +92,9 @@ class Game
             return;
         }
 
-        for (int i = 0; i < players.Length; i++)
+        foreach (Player player in players)
         {
-            players[i].Points = 0;
+            player.Points = 0;
         }
     }
 
@@ -109,20 +107,22 @@ class Game
 
         Console.WriteLine($"  Round {roundNumber}");
 
-        string[] signs = new string[players.Length];
-        string[] winningSigns = new string[players.Length];
+        List<string> signs = new List<string>();
+        List<string> winningSigns = new List<string>();
 
-        for (int i = 0; i < players.Length; i++)
+        foreach(Player player in players)
         {
-            signs[i] = players[i].GetSign(availableSigns, EndGameCommand) ?? String.Empty;
+            string sign = player.GetSign(availableSigns, EndGameCommand) ?? string.Empty;
+            signs.Add(sign);
 
-            if (signs[i] == EndGameCommand)
+            if (sign == EndGameCommand)
             {
                 keepPlaying = false;
                 return false;
             }
 
-            winningSigns[i] = GetSignWinningWith(signs[i]);
+            string winningSign = GetSignWinningWith(sign);
+            winningSigns.Add(winningSign);
         }
 
         for (int firstPlayerIndex = 0; firstPlayerIndex < players.Length - 1; firstPlayerIndex++)
@@ -153,9 +153,9 @@ class Game
             }
         }
 
-        for (int i = 0; i < players.Length; i++)
+        foreach(Player player in players)
         {
-            Console.WriteLine($"[{players[i].Name}]: {players[i].Points}");
+            Console.WriteLine($"[{player.Name}]: {player.Points}");
         }
 
         return true;
