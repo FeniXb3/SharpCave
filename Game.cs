@@ -1,6 +1,6 @@
 class Game
 {
-    string[] availableSigns = { "rock", "paper", "scissors" };
+    readonly string[] availableSigns = { "rock", "paper", "scissors" };
     const string EndGameCommand = "quit";
     private const int DefaultRoundsAmount = 3;
     private const int DefaultPlayersAmount = 2;
