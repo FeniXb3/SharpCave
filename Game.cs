@@ -2,7 +2,9 @@ class Game
 {
     string[] availableSigns = { "rock", "paper", "scissors" };
     const string EndGameCommand = "quit";
-    int expectedRoundNumber = 3;
+    private const int DefaultRoundsAmount = 3;
+    private const int DefaultPlayersAmount = 2;
+    int expectedRoundsAmount;
     bool keepPlaying = true;
     bool playingWithOtherHuman;
     Player[]? players;
@@ -14,8 +16,8 @@ class Game
         bool result = int.TryParse(Console.ReadLine()?.Trim(), out int playersAmount);
         if (!result)
         {
-            Console.WriteLine("I don't get your math, so it will be 2 players game.");
-            playersAmount = 2;
+            Console.WriteLine($"I don't get your math, so it will be {DefaultPlayersAmount} players game.");
+            playersAmount = DefaultPlayersAmount;
         }
         players = new Player[playersAmount];
 
@@ -46,7 +48,15 @@ class Game
 
     private void PlayGame()
     {
-        for (int roundNumber = 1; roundNumber <= expectedRoundNumber; roundNumber++)
+        Console.WriteLine("How many rounds do you want to play?");
+        bool result = int.TryParse(Console.ReadLine()?.Trim(), out expectedRoundsAmount);
+        if (!result)
+        {
+            Console.WriteLine($"Ok, so make it {DefaultRoundsAmount} rounds");
+            expectedRoundsAmount = DefaultRoundsAmount;
+        }
+        
+        for (int roundNumber = 1; roundNumber <= expectedRoundsAmount; roundNumber++)
         {
             bool continueGame = PlayRound(roundNumber);
             if (!continueGame)
