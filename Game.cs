@@ -10,7 +10,13 @@ class Game
     public void Run()
     {
         Console.WriteLine("Let's play Rock-Paper-Scissors!");
-        int playersAmount = 3;
+        Console.WriteLine("How many players will play?");
+        bool result = int.TryParse(Console.ReadLine()?.Trim(), out int playersAmount);
+        if (!result)
+        {
+            Console.WriteLine("I don't get your math, so it will be 2 players game.");
+            playersAmount = 2;
+        }
         players = new Player[playersAmount];
 
         Console.WriteLine("Do you have anyone to play with? (yes/no)");
