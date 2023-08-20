@@ -73,7 +73,7 @@ class Game
             return;
         }
 
-        List<Player> winningPlayers = new List<Player>();
+        List<Player> winningPlayers = new();
         int winningPoints = -1;
         winningPoints = GetWinners(winningPlayers, winningPoints);
 
